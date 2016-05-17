@@ -6,6 +6,8 @@
 
 screenFetch was originally made as a "Bash Screenshot Information Tool". Simply, it lets you display detailed information about your system in the terminal, it also comes with a ASCII logo for the detected Linux distribution.
 
+This doesn't work on Windows natively and this project is my attempt to provide a solution that does not require obtaining a linux environment on windows.
+
 <a href="https://github.com/KittyKatt/screenFetch"> The original can be found in KittyKatt's repository.</a>
 
 #### How is it different? <hr>
