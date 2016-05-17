@@ -8,7 +8,7 @@ screenFetch was originally made as a "Bash Screenshot Information Tool". Simply,
 
 <a href="https://github.com/KittyKatt/screenFetch"> The original can be found in KittyKatt's repository.</a>
 
-### How is it different? <hr>
+#### How is it different? <hr>
 The original screenfetch requires a system that supports bash so it cannot be used on windows natively! This is a small scale project that simply "mimics" the behaviour of screenFetch in windows. 
 
 **Windows screenFetch is a Powershell script, not a Bash program**. Therefore, a linux-like environment such as <a href="https://www.cygwin.com/"> Cygwin</a> or <a href="http://www.mingw.org/wiki/msys">MinGW</a> is ***not required***. This can be run natively on windows as a Powershell script within a Powershell or command prompt console.
