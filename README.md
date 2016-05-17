@@ -32,7 +32,7 @@ Windows screenFetch is not hooked up to any repository like chocolatey where for
 -  now you should be able to run `powershell screenfetch` from anywhere in the Powershell console
 
 ####Troubleshooting <hr>
-If you have followed the isntallation steps but you're getting the following error:
+If you have followed the installation steps but you're getting the following error:
 
 ```
 The file C:\<yourpath>\screenfetch.ps1 is not digitally signed. 
