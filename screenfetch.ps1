@@ -3,7 +3,7 @@
 
 
 # Some important Variables for convenience
-$Horizontal = (gwmi -Class Win32_VideoController).CurrentHorizontalResolution | select -f 1;
+$Horizontal = (gwmi -Class Win32_VideoController).CurrentHorizontalResolution | select -f 2;
 $Vertical = (gwmi -Class Win32_VideoController).CurrentVerticalResolution | select -f 1;
 $uptime = ((gwmi Win32_OperatingSystem).ConvertToDateTime((gwmi Win32_OperatingSystem).LocalDateTime) - 
            (gwmi Win32_OperatingSystem).ConvertToDateTime((gwmi Win32_OperatingSystem).LastBootUpTime));
@@ -50,22 +50,17 @@ Write-Host "Powershell 3.0"
 #Line 7 - Resolution
 Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "Resolution: " -f Red -NoNewline; 
-Write-Host $Horizontal"x"$Vertical;
+Write-Host $Horizontal "x" $Vertical;
 
-#Line 8 - Windows Manager
+#Line 8 - Windows Manager (HARDCODED)
 Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "Window Manager: " -f Red -nonewline; 
 Write-Host "DWM";
 
-#Line 9 - WM Theme
+#Line 10 - Font (HARDCODED)
 Write-Host "................ ................       " -f Cyan -NoNewline;
-Write-Host "WM Theme: " -f Red -NoNewline;
-Write-Host "Dash"
-
-#Line 10 - Font
-Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "Font: " -f Red -nonewline; 
-Write-Host "Ubuntu Mono";
+Write-Host "Segoe UI";
 
 #Line 11 - CPU
 Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
@@ -92,7 +87,7 @@ Write-Host " (" -NoNewline
 Write-Host $RamPercent"%" -f Green -NoNewline;
 Write-Host ")";
 
-#Line 14 - Disk Space
+#Line 13 - Disk Usage
 Write-Host "'''':::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "Disk: " -f Red -NoNewline;
 Write-Host $FreeDiskSizeGB"GB" " / " $DiskSizeGB"GB" -NoNewline;
@@ -103,3 +98,5 @@ Write-Host ")";
 Write-Host "        '''':::: ::::::::::::::::       " -f Cyan #-NoNewline;
 Write-Host "                 ''''::::::::::::       " -f Cyan #-NoNewline;
 Write-Host "                         ''''::::       " -f Cyan #-NoNewline;
+
+
