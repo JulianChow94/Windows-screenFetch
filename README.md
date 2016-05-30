@@ -23,13 +23,13 @@ Windows screenFetch is not hooked up to any repository like chocolatey where for
 
 <b>Powershell</b>
 -  place `screenfetch.ps1` in a convinient folder location.
--  add the path to `screenfetch.ps1` to your <a href="http://www.computerhope.com/issues/ch000549.htm">enivonrment variables</a>
+-  add the path to `screenfetch.ps1` to your <a href="http://www.computerhope.com/issues/ch000549.htm">environment variables</a>
 -  now you should be able to run `screenfetch` from anywhere in the Powershell console
 
 <b>Command Prompt</b>
 -  place `screenfetch.ps1` in a convinient folder location.
--  add the path to `screenfetch.ps1` to your <a href="http://www.computerhope.com/issues/ch000549.htm">enivonrment variables</a>
--  now you should be able to run `powershell screenfetch` from anywhere in the Powershell console
+-  add the path to `screenfetch.ps1` to your <a href="http://www.computerhope.com/issues/ch000549.htm">environment variables</a>
+-  now you should be able to run `powershell screenfetch` from anywhere in the cmd console
 
 ####Troubleshooting <hr>
 If you have followed the installation steps but you're getting the following error:
