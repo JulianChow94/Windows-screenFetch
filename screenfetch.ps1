@@ -18,7 +18,7 @@ $DiskPercent = "{0:N0}" -f $DiskPercent;
 
 # Line 1 - HostName
 Write-Host "                         ....::::       " -f Cyan -NoNewline;
-Write-Host (gwmi Win32_OperatingSystem).RegisteredUser -f red -nonewline; 
+Write-Host $env:username -f red -nonewline; 
 Write-Host "@" -f gray -nonewline; 
 Write-Host (gwmi Win32_OperatingSystem).CSName -f red;
 
