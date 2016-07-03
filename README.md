@@ -1,6 +1,6 @@
 #Windows screenFetch
 
-<img src="http://i.imgur.com/yuErpu5.png"/>
+<img src="http://i.imgur.com/a5hDX3b.png"/>
 
 ####screenFetch <hr>
 
