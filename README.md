@@ -19,7 +19,7 @@ The original screenfetch requires a system that supports bash so it cannot be us
 
 ####Installation <hr>
 
-Windows screenFetch is not hooked up to any repository like chocolatey where for command line installation. Download the script source code from this repository.
+Windows screenFetch is not hooked up to any repository like chocolatey for command line installation. Download the script source code from this repository.
 
 <b>Powershell</b>
 -  place `screenfetch.ps1` in a convinient folder location.
