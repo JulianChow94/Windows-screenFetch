@@ -1,11 +1,25 @@
 #### Screenfetch for powershell
 #### Author Julian Chow
 
+Add-Type -AssemblyName System.Windows.Forms
+
+####### Functions ########
+Function Get-PrimaryResolution{
+    Param ($monitorArray)
+    foreach ($monitor in $monitorArray){
+        if($monitor.Primary){       
+            $primaryResolution = [System.Tuple]::Create($monitor.Bounds.Width, $monitor.Bounds.Height);
+            return $primaryResolution;
+        }
+    }
+}
+
 ####### Information Collection #########
 
 ## Resolution Information
-$Horizontal = (gwmi -Class Win32_VideoController).CurrentHorizontalResolution | select -f 2;
-$Vertical = (gwmi -Class Win32_VideoController).CurrentVerticalResolution | select -f 1;
+$PrimaryResolution = Get-PrimaryResolution([System.Windows.Forms.Screen]::AllScreens);
+$Horizontal = $PrimaryResolution.Item1;
+$Vertical = $PrimaryResolution.Item2;
 
 ## Uptime Information
 $uptime = ((gwmi Win32_OperatingSystem).ConvertToDateTime((gwmi Win32_OperatingSystem).LocalDateTime) - 
@@ -73,7 +87,7 @@ Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "Shell: " -f Red -nonewline; 
 Write-Host "Powershell 3.0"
 
-# Line 7 - Resolution
+# Line 7 - Resolution (for primary monitor only)
 Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "Resolution: " -f Red -NoNewline; 
 Write-Host $Horizontal "x" $Vertical;
@@ -118,5 +132,4 @@ Write-Host ")";
 Write-Host "        '''':::: ::::::::::::::::       " -f Cyan;
 Write-Host "                 ''''::::::::::::       " -f Cyan;
 Write-Host "                         ''''::::       " -f Cyan;
-
 
