@@ -4,8 +4,7 @@
 Add-Type -AssemblyName System.Windows.Forms
 
 ####### Functions ########
-Function Get-PrimaryResolution{
-    Param ($monitorArray)
+Function Get-PrimaryResolution{ Param ($monitorArray)
     foreach ($monitor in $monitorArray){
         if($monitor.Primary){       
             $primaryResolution = [System.Tuple]::Create($monitor.Bounds.Width, $monitor.Bounds.Height);
