@@ -79,7 +79,7 @@ Write-Host $uptime.Days"d " $uptime.Hours"h " $uptime.Minutes"m " $uptime.Second
 # Line 5 - Motherboard
 Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "Motherboard: " -f Red -nonewline; 
-Write-Host $Motherboard.Product;
+Write-Host $Motherboard.Manufacturer $Motherboard.Product;
 
 # Line 6 - Shell (Hardcoded since it is unlikely anybody can run this without powershell)
 Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
