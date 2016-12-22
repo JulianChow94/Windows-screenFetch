@@ -62,63 +62,63 @@ $UsedRamPercent = "{0:N0}" -f $UsedRamPercent;
 ####### Printing Output #########
 
 # Line 1 - HostName
-Write-Host "                          ,,,;;;1       " -f Cyan -NoNewline;
+Write-Host "                         ....::::       " -f Cyan -NoNewline;
 Write-Host $Username -f red -nonewline; 
 Write-Host "@" -f gray -nonewline; 
 Write-Host $Machine -f red;
 
 # Line 2 - OS
-Write-Host "                ,,;;;101000100001       " -f Cyan -NoNewline;
+Write-Host "                 ....::::::::::::       " -f Cyan -NoNewline;
 Write-Host "OS: " -f Red -NoNewline;
 Write-Host $OS $BitVer;
 
 # Line 3 - Kernel
-Write-Host "     ,,,;;;11   10101001001010010       " -f Cyan -NoNewline;
+Write-Host "        ....:::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "Kernel: " -f Red -nonewline;
 Write-Host $Kernel;
 
 # Line 4 - Uptime
-Write-Host "0111101000111   10110111101101110       " -f Cyan -NoNewline;
+Write-Host "....:::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "Uptime: " -f Red  -nonewline;
 Write-Host $uptime.Days"d " $uptime.Hours"h " $uptime.Minutes"m " $uptime.Seconds"s " -separator "";
 
 # Line 5 - Motherboard
-Write-Host "1111010110101   10010100101011010       " -f Cyan -NoNewline;
+Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "Motherboard: " -f Red -nonewline; 
 Write-Host $Motherboard.Manufacturer $Motherboard.Product;
 
 # Line 6 - Shell (Hardcoded since it is unlikely anybody can run this without powershell)
-Write-Host "0101010001010   01010101000101010       " -f Cyan -NoNewline;
+Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "Shell: " -f Red -nonewline; 
 Write-Host "PowerShell $($PSVersionTable.PSVersion.ToString())"
 
 # Line 7 - Resolution (for primary monitor only)
-Write-Host "1010101010110   01100001011110100       " -f Cyan -NoNewline;
+Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "Resolution: " -f Red -NoNewline; 
 Write-Host $Horizontal "x" $Vertical;
 
 # Line 8 - Windows Manager (HARDCODED, sorry bbzero users)
-Write-Host "1100110111011   01101001001010100       " -f Cyan -NoNewline;
+Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "Window Manager: " -f Red -nonewline; 
 Write-Host "DWM";
 
 # Line 10 - Font (HARDCODED)
-Write-Host "                                        " -f Cyan -NoNewline;
+Write-Host "................ ................       " -f Cyan -NoNewline;
 Write-Host "Font: " -f Red -nonewline; 
 Write-Host "Segoe UI";
 
 # Line 11 - CPU
-Write-Host "1100110110101   01000101001101010       " -f Cyan -NoNewline;
+Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "CPU: " -f Red -nonewline; 
 Write-Host $CPU;
 
 # Line 12 - GPU
-Write-Host "0011100100011   10010001001011000       " -f Cyan -NoNewline;
+Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "GPU: " -f Red -nonewline; 
 Write-Host $GPU;
 
 # Line 13 - Ram
-Write-Host "1010001110101   10100010101001010       " -f Cyan -NoNewline;
+Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "RAM: " -f Red -nonewline;
 Write-Host $UsedRam "MB / $TotalRam MB" -NoNewline;
 Write-Host " (" -NoNewline
@@ -126,7 +126,7 @@ Write-Host $UsedRamPercent"%" -f Green -NoNewline;
 Write-Host ")";
 
 # Line 13 - Disk Usage
-Write-Host "1101100001011   10001011010101010       " -f Cyan -NoNewline;
+Write-Host "'''':::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "Disk: " -f Red -NoNewline;
 Write-Host $UsedDiskSizeGB"GB" " / " $DiskSizeGB"GB" -NoNewline;
 Write-Host " (" -NoNewline; 
@@ -134,7 +134,7 @@ Write-Host $UsedDiskPercent"%" -f Green -NoNewline;
 Write-Host ")"; 
 
 # Empty Lines
-Write-Host "0010001000101   01010110011010010       " -f Cyan;
-Write-Host "     ``````***01   10100011010010101       " -f Cyan;
-Write-Host "                ``````***10101010101       " -f Cyan;
-Write-Host "                           ``````***       " -f Cyan;
+Write-Host "        '''':::: ::::::::::::::::       " -f Cyan;
+Write-Host "                 ''''::::::::::::       " -f Cyan;
+Write-Host "                         ''''::::       " -f Cyan;
+
