@@ -84,7 +84,7 @@ Write-Host $Motherboard.Manufacturer $Motherboard.Product;
 # Line 6 - Shell (Hardcoded since it is unlikely anybody can run this without powershell)
 Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "Shell: " -f Red -nonewline; 
-Write-Host "Powershell 3.0"
+Write-Host "PowerShell $($PSVersionTable.PSVersion.ToString())"
 
 # Line 7 - Resolution (for primary monitor only)
 Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
