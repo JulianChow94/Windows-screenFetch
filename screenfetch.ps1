@@ -33,8 +33,12 @@ $FreeDiskSizeGB = "{0:N0}" -f $FreeDiskSizeGB;
 $DiskSize = (gwmi Win32_LogicalDisk).size | select -f 1;
 $DiskSizeGB = $DiskSize / 1073741824;
 $DiskSizeGB = "{0:N0}" -f $DiskSizeGB;
-$DiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
-$DiskPercent = "{0:N0}" -f $DiskPercent;
+$FreeDiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
+$FreeDiskPercent = "{0:N0}" -f $FreeDiskPercent;
+# Used Space
+$UsedDiskSizeGB = $DiskSizeGB - $FreeDiskSizeGB;
+$UsedDiskPercent = ($UsedDiskSizeGB / $DiskSizeGB) * 100;
+$UsedDiskPercent = "{0:N0}" -f $UsedDiskPercent;
 
 ## Environment Information
 $Username = $env:username;
@@ -49,9 +53,11 @@ $CPU = (((gwmi Win32_Processor).Name) -replace '\s+', ' ');
 $GPU = (gwmi Win32_DisplayConfiguration).DeviceName;
 $FreeRam = ([math]::Truncate((gwmi Win32_OperatingSystem).FreePhysicalMemory / 1KB)); 
 $TotalRam = ([math]::Truncate((gwmi Win32_ComputerSystem).TotalPhysicalMemory / 1MB));
-$RamPercent = ($FreeRam / $TotalRam) * 100;
-$RamPercent = "{0:N0}" -f $RamPercent;
-
+$UsedRam = $TotalRam - $FreeRam;
+$FreeRamPercent = ($FreeRam / $TotalRam) * 100;
+$FreeRamPercent = "{0:N0}" -f $FreeRamPercent;
+$UsedRamPercent = ($UsedRam / $TotalRam) * 100;
+$UsedRamPercent = "{0:N0}" -f $UsedRamPercent;
 
 ####### Printing Output #########
 
@@ -84,7 +90,7 @@ Write-Host $Motherboard.Manufacturer $Motherboard.Product;
 # Line 6 - Shell (Hardcoded since it is unlikely anybody can run this without powershell)
 Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "Shell: " -f Red -nonewline; 
-Write-Host "Powershell 3.0"
+Write-Host "PowerShell $($PSVersionTable.PSVersion.ToString())"
 
 # Line 7 - Resolution (for primary monitor only)
 Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
@@ -114,17 +120,17 @@ Write-Host $GPU;
 # Line 13 - Ram
 Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "RAM: " -f Red -nonewline;
-Write-Host $FreeRam "MB / $TotalRam MB" -NoNewline;
+Write-Host $UsedRam "MB / $TotalRam MB" -NoNewline;
 Write-Host " (" -NoNewline
-Write-Host $RamPercent"%" -f Green -NoNewline;
+Write-Host $UsedRamPercent"%" -f Green -NoNewline;
 Write-Host ")";
 
 # Line 13 - Disk Usage
 Write-Host "'''':::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "Disk: " -f Red -NoNewline;
-Write-Host $FreeDiskSizeGB"GB" " / " $DiskSizeGB"GB" -NoNewline;
+Write-Host $UsedDiskSizeGB"GB" " / " $DiskSizeGB"GB" -NoNewline;
 Write-Host " (" -NoNewline; 
-Write-Host $DiskPercent"%" -f Green -NoNewline;
+Write-Host $UsedDiskPercent"%" -f Green -NoNewline;
 Write-Host ")"; 
 
 # Empty Lines
