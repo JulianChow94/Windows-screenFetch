@@ -13,12 +13,21 @@ Function Get-PrimaryResolution{ Param ($monitorArray)
     }
 }
 
-####### Information Collection #########
+Function Get-Displays
+{ Param ($monitorArray)
 
-## Resolution Information
-$PrimaryResolution = Get-PrimaryResolution([System.Windows.Forms.Screen]::AllScreens);
-$Horizontal = $PrimaryResolution.Item1;
-$Vertical = $PrimaryResolution.Item2;
+    foreach ($monitor in $monitorArray)
+    {
+        $resolution = [System.Tuple]::Create($monitor.Bounds.Width, $monitor.Bounds.Height);
+        $displayString = $resolution.Item1.ToString() + " x " + $resolution.Item2.ToString() + "  ";
+        Write-Host $displayString -NoNewline;
+
+    }
+
+    Write-Host ;
+}
+
+####### Information Collection #########
 
 ## Uptime Information
 $uptime = ((gwmi Win32_OperatingSystem).ConvertToDateTime((gwmi Win32_OperatingSystem).LocalDateTime) - 
@@ -95,7 +104,8 @@ Write-Host "PowerShell $($PSVersionTable.PSVersion.ToString())"
 # Line 7 - Resolution (for primary monitor only)
 Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
 Write-Host "Resolution: " -f Red -NoNewline; 
-Write-Host $Horizontal "x" $Vertical;
+#Write-Host $Horizontal "x" $Vertical;
+Get-Displays([System.Windows.Forms.Screen]::AllScreens);
 
 # Line 8 - Windows Manager (HARDCODED, sorry bbzero users)
 Write-Host ":::::::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
