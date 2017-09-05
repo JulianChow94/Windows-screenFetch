@@ -19,7 +19,7 @@ Function Get-Displays
     foreach ($monitor in $monitorArray)
     {
         $resolution = [System.Tuple]::Create($monitor.Bounds.Width, $monitor.Bounds.Height);
-        $displayString = $resolution.Item1.ToString() + " x " + $resolution.Item2.ToString() + "  ";
+        $displayString = $resolution.Item1.ToString() + "x" + $resolution.Item2.ToString() + " ";
         Write-Host $displayString -NoNewline;
 
     }
