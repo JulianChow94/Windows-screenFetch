@@ -2,6 +2,8 @@
 #### Author Julian Chow
 
 Add-Type -AssemblyName System.Windows.Forms
+####### Globals #######
+$global:Hackcounter = 0;
 
 ####### Functions ########
 Function Get-PrimaryResolution{ Param ($monitorArray)
@@ -11,6 +13,54 @@ Function Get-PrimaryResolution{ Param ($monitorArray)
             return $primaryResolution;
         }
     }
+}
+
+Function DiskDataBuilder ($id, $name, $freespace, $totalspace){
+    ## Disk Information
+    # Available Space
+    $FreeDiskSize = $freespace
+    $FreeDiskSizeGB = $FreeDiskSize / 1073741824;
+    $FreeDiskSizeGB = "{0:N0}" -f $FreeDiskSizeGB;
+    # Total Space
+    $DiskSize = $totalspace
+    $DiskSizeGB = $DiskSize / 1073741824;
+    $DiskSizeGB = "{0:N0}" -f $DiskSizeGB;
+    $FreeDiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
+    $FreeDiskPercent = "{0:N0}" -f $FreeDiskPercent;
+    # Used Space
+    $UsedDiskSizeGB = $DiskSizeGB - $FreeDiskSizeGB;
+    $UsedDiskPercent = ($UsedDiskSizeGB / $DiskSizeGB) * 100;
+    $UsedDiskPercent = "{0:N0}" -f $UsedDiskPercent;
+
+    If (-not $name){
+        $name = "NO NAME";
+    }
+
+
+    If ($global:Hackcounter -eq 0){
+        Write-Host "'''':::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
+        Write-Host "Disk: " -f Red -NoNewline;
+    }
+    Elseif ($global:Hackcounter -eq 1){
+        Write-Host "        '''':::: ::::::::::::::::             " -f Cyan -NoNewline;
+    }
+    Elseif ($global:Hackcounter -eq 2){
+        Write-Host "                 ''''::::::::::::             " -f Cyan -NoNewline;
+    }
+    Elseif ($global:Hackcounter -eq 3){
+        Write-Host "                         ''''::::             " -f Cyan -NoNewline;
+    }
+    Else{
+        Write-Host "                                              " -NoNewline;
+    }
+
+    $global:Hackcounter++;
+
+    Write-Host $id $name " "-NoNewline;
+    Write-Host $UsedDiskSizeGB"GB" " / " $DiskSizeGB"GB" -NoNewline;
+    Write-Host " (" -NoNewline;
+    Write-Host $UsedDiskPercent"%" -f Green -NoNewline;
+    Write-Host ")";
 }
 
 ####### Information Collection #########
@@ -23,22 +73,6 @@ $Vertical = $PrimaryResolution.Item2;
 ## Uptime Information
 $uptime = ((gwmi Win32_OperatingSystem).ConvertToDateTime((gwmi Win32_OperatingSystem).LocalDateTime) - 
            (gwmi Win32_OperatingSystem).ConvertToDateTime((gwmi Win32_OperatingSystem).LastBootUpTime));
-
-## Disk Information
-# Available Space
-$FreeDiskSize = (gwmi Win32_LogicalDisk).FreeSpace | select -f 1;
-$FreeDiskSizeGB = $FreeDiskSize / 1073741824;
-$FreeDiskSizeGB = "{0:N0}" -f $FreeDiskSizeGB;
-# Total Space
-$DiskSize = (gwmi Win32_LogicalDisk).size | select -f 1;
-$DiskSizeGB = $DiskSize / 1073741824;
-$DiskSizeGB = "{0:N0}" -f $DiskSizeGB;
-$FreeDiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
-$FreeDiskPercent = "{0:N0}" -f $FreeDiskPercent;
-# Used Space
-$UsedDiskSizeGB = $DiskSizeGB - $FreeDiskSizeGB;
-$UsedDiskPercent = ($UsedDiskSizeGB / $DiskSizeGB) * 100;
-$UsedDiskPercent = "{0:N0}" -f $UsedDiskPercent;
 
 ## Environment Information
 $Username = $env:username;
@@ -125,16 +159,16 @@ Write-Host " (" -NoNewline
 Write-Host $UsedRamPercent"%" -f Green -NoNewline;
 Write-Host ")";
 
-# Line 13 - Disk Usage
-Write-Host "'''':::::::::::: ::::::::::::::::       " -f Cyan -NoNewline;
-Write-Host "Disk: " -f Red -NoNewline;
-Write-Host $UsedDiskSizeGB"GB" " / " $DiskSizeGB"GB" -NoNewline;
-Write-Host " (" -NoNewline; 
-Write-Host $UsedDiskPercent"%" -f Green -NoNewline;
-Write-Host ")"; 
+# Line 14 - Disk Usage
+Get-WmiObject Win32_LogicalDisk | ForEach-Object -Process {DiskDataBuilder $_.DeviceID $_.VolumeName $_.FreeSpace $_.Size}
 
 # Empty Lines
-Write-Host "        '''':::: ::::::::::::::::       " -f Cyan;
-Write-Host "                 ''''::::::::::::       " -f Cyan;
-Write-Host "                         ''''::::       " -f Cyan;
-
+if ($global:Hackcounter -le 1) {
+    Write-Host "        '''':::: ::::::::::::::::       " -f Cyan;
+}
+If ($global:Hackcounter -le 2){
+    Write-Host "                 ''''::::::::::::       " -f Cyan;
+}
+If ($global:Hackcounter -le 3){
+    Write-Host "                         ''''::::       " -f Cyan;
+}
