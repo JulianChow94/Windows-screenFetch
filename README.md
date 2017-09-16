@@ -1,4 +1,4 @@
-#Windows screenFetch
+# Windows screenFetch
 
 <img src="screenshots/ss.png"/>
 
