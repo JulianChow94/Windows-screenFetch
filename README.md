@@ -1,8 +1,8 @@
-#Windows screenFetch
+# Windows screenFetch
 
-<img src="ss.png"/>
+<img src="screenshots/ss.png"/>
 
-####screenFetch <hr>
+#### ScreenFetch <hr>
 
 screenFetch was originally made as a "Bash Screenshot Information Tool". Simply, it lets you display detailed information about your system in the terminal, it also comes with a ASCII logo for the detected Linux distribution.
 
@@ -17,7 +17,7 @@ The original screenfetch requires a system that supports bash so it cannot be us
 
 *Since this tool is only intended to run within a windows environment, no flags to invoke any Linux distribution ASCII art is supported.*
 
-####Installation <hr>
+#### Installation <hr>
 
 Windows screenFetch is not hooked up to any repository like chocolatey for command line installation. Download the script source code from this repository.
 
@@ -31,7 +31,15 @@ Windows screenFetch is not hooked up to any repository like chocolatey for comma
 -  add the path to `screenfetch.ps1` to your <a href="http://www.computerhope.com/issues/ch000549.htm">environment variables</a>
 -  now you should be able to run `powershell screenfetch` from anywhere in the cmd console
 
-####Troubleshooting <hr>
+
+#### Usage Parameters <hr>
+- The `-distro` argument allows you to specify the ASCII logo shown
+- Possible alternatives currently is the apple logo, please see `AsciiArtGenerator` for possible extensions
+
+<br>
+<img src="screenshots/mac.png">
+
+#### Troubleshooting <hr>
 If you have followed the installation steps but you're getting the following error:
 
 ```
@@ -42,7 +50,7 @@ The script will not execute on the system.
 A common fix is to run the powershell command `Set-ExecutionPolicy Unrestricted` in a shell with administrative privileges.
 
 
-####Contact Me <hr>
+#### Contact Me <hr>
 Below are my two most active social portals
 
 - `julianchow@outlook.com`
