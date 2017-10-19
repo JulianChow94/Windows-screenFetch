@@ -129,7 +129,7 @@ Function Get-RAM {
     $UsedRamPercent = ($UsedRam / $TotalRam) * 100;
     $UsedRamPercent = "{0:N0}" -f $UsedRamPercent;
 
-    return $UsedRam.ToString() + "MB / " + $TotalRam.ToString() + " MB " + "C" + $UsedRamPercent.ToString() + "%" + ")";
+    return $UsedRam.ToString() + "MB / " + $TotalRam.ToString() + " MB " + "(" + $UsedRamPercent.ToString() + "%" + ")";
 }
 
 Function Get-Disks {
