@@ -149,17 +149,22 @@ Function Get-Disks {
         $DiskSizeGB = $DiskSize / 1073741824;
         $DiskSizeGB = "{0:N0}" -f $DiskSizeGB;
 
-        $FreeDiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
-        $FreeDiskPercent = "{0:N0}" -f $FreeDiskPercent;
+        if ($DiskSize -gt 0) {
+            $FreeDiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
+            $FreeDiskPercent = "{0:N0}" -f $FreeDiskPercent;
 
-        $UsedDiskSizeGB = $DiskSizeGB - $FreeDiskSizeGB;
-        $UsedDiskPercent = ($UsedDiskSizeGB / $DiskSizeGB) * 100;
-        $UsedDiskPercent = "{0:N0}" -f $UsedDiskPercent;
+            $UsedDiskSizeGB = $DiskSizeGB - $FreeDiskSizeGB;
+            $UsedDiskPercent = ($UsedDiskSizeGB / $DiskSizeGB) * 100;
+            $UsedDiskPercent = "{0:N0}" -f $UsedDiskPercent;
 
-        $FormattedDisk = "Disk " + $DiskID.ToString() + " " + 
-            $UsedDiskSizeGB.ToString() + "GB" + " / " + $DiskSizeGB.ToString() + "GB " + 
-            "(" + $UsedDiskPercent.ToString() + "%" + ")";
-        $FormattedDisks.Add($FormattedDisk);
+            $FormattedDisk = "Disk " + $DiskID.ToString() + " " +
+                $UsedDiskSizeGB.ToString() + "GB" + " / " + $DiskSizeGB.ToString() + "GB " +
+                "(" + $UsedDiskPercent.ToString() + "%" + ")";
+            $FormattedDisks.Add($FormattedDisk);
+        } else {
+            $FormattedDisk = "Disk " + $DiskID.ToString() + " Empty";
+            $FormattedDisks.Add($FormattedDisk);
+        }
     }
 
     return $FormattedDisks;
