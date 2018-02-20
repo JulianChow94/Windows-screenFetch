@@ -1,4 +1,5 @@
-Function Get-WindowsArt {
+Function Get-WindowsArt()
+{
     [string[]] $ArtArray  =
             "                         ....::::       ",
             "                 ....::::::::::::       ",
@@ -23,7 +24,8 @@ Function Get-WindowsArt {
     return $ArtArray;
 }
 
-Function Get-MacArt {
+Function Get-MacArt()
+{
     [string[]] $ArtArray = 
             "                 -/+:.                  ",
             "                :++++.                  ",
@@ -48,8 +50,5 @@ Function Get-MacArt {
 
     return $ArtArray;    
 }
-
-Export-ModuleMember -function Get-WindowsArt
-Export-ModuleMember -function Get-MacArt
 
 
