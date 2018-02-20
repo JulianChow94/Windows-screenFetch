@@ -19,17 +19,19 @@ The original screenfetch requires a system that supports bash so it cannot be us
 
 #### Installation <hr>
 
-Windows screenFetch is not hooked up to any repository like chocolatey for command line installation. Download the script source code from this repository.
+Windows screenFetch is available and managed through <a href="https://www.powershellgallery.com/packages/windows-screenfetch">Powershell Gallery</a>. 
 
 <b>Powershell</b>
--  place `screenfetch.ps1` in a convinient folder location.
--  add the path to `screenfetch.ps1` to your <a href="http://www.computerhope.com/issues/ch000549.htm">environment variables</a>
--  now you should be able to run `screenfetch` from anywhere in the Powershell console
 
-<b>Command Prompt</b>
--  place `screenfetch.ps1` in a convinient folder location.
--  add the path to `screenfetch.ps1` to your <a href="http://www.computerhope.com/issues/ch000549.htm">environment variables</a>
--  now you should be able to run `powershell screenfetch` from anywhere in the cmd console
+    PS> Install-Module -Name windows-screenfetch -RequiredVersion 1.0
+
+Simply run the <code>Screenfetch</code> command after installing the module and you should be good to go
+
+
+<b>~~Command Prompt~~</b>
+
+No longer supported
+
 
 
 #### Usage Parameters <hr>
