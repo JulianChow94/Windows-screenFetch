@@ -46,7 +46,7 @@ Function Get-LineToTitleMappings {
         3 = "Uptime: ";
         4 = "Motherboard: ";
         5 = "Shell: ";
-        6 = "Resolution: ";
+        6 = "Scaled Resolution: ";
         7 = "Window Manager: ";
         8 = "Font: ";
         9 = "CPU: ";

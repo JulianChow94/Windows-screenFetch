@@ -46,7 +46,10 @@ Function Get-MacArt {
             "                                        ",
             "                                        ";
 
-    return $ArtArray;
-    
+    return $ArtArray;    
 }
+
+Export-ModuleMember -function Get-WindowsArt
+Export-ModuleMember -function Get-MacArt
+
 
