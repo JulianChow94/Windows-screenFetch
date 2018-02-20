@@ -25,7 +25,7 @@ Windows screenFetch is available and managed through <a href="https://www.powers
 
 <b=>Note</b> that if you were using windows-screenfetch before it was uploaded to Powershell Gallery, you will need to delete the local instance and associated environment variables before running the following install.
 
-    PS> Install-Module -Name windows-screenfetch -RequiredVersion 1.0
+    PS> Install-Module -Name windows-screenfetch
 
 Simply run the <code>Screenfetch</code> command after installing the module and you should be good to go.
 
