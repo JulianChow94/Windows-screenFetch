@@ -4,10 +4,6 @@
 
 Function Screenfetch($distro)
 {
-
-    # Import-Module $PSScriptRoot\AsciiArtGenerator.psm1;
-    # Import-Module $PSScriptRoot\SystemInfoCollector.psm1;
-    
     $AsciiArt = "";
 
     if (-not $distro) {
