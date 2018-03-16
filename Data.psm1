@@ -99,6 +99,14 @@ Function Get-Shell()
     return "PowerShell $($PSVersionTable.PSVersion.ToString())";
 }
 
+Function Get-Display()
+{
+    # This gives the current resolution
+    $videoMode = Get-WmiObject -Class Win32_VideoController;
+    $Display = $videoMode.CurrentHorizontalResolution.ToString() + " x " + $videoMode.CurrentVerticalResolution.ToString() + " (" + $videoMode.CurrentRefreshRate.ToString() + "Hz)";
+    return $Display;
+}
+
 Function Get-Displays()
 { 
     $Displays = New-Object System.Collections.Generic.List[System.Object];
@@ -113,6 +121,10 @@ Function Get-Displays()
         $maxResolutions = $sortedResolutions | select @{N="MaxRes";E={"$($_.HorizontalActivePixels) x $($_.VerticalActivePixels) "}}
 
         $Displays.Add(($maxResolutions | select -last 1).MaxRes);
+    }
+
+    if ($Displays.Count -eq 1) {
+        return Get-Display
     }
 
     return $Displays;
