@@ -177,7 +177,7 @@ Function Get-Disks()
 
             $DiskSize = (Get-WmiObject Win32_LogicalDisk)[$i].Size;
 
-            if ($DiskSize)
+            if ($DiskSize -and $DiskSize -ne 0)
             {
                 $FreeDiskSize = (Get-WmiObject Win32_LogicalDisk)[$i].FreeSpace
                 $FreeDiskSizeGB = $FreeDiskSize / 1073741824;
