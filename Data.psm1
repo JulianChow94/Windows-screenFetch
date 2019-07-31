@@ -117,10 +117,10 @@ Function Get-Displays()
     foreach($monitor in $monitors) 
     {
         # Sort the available modes by display area (width*height)
-        $sortedResolutions = $monitor.MonitorSourceModes | sort -property {$_.HorizontalActivePixels * $_.VerticalActivePixels}
-        $maxResolutions = $sortedResolutions | select @{N="MaxRes";E={"$($_.HorizontalActivePixels) x $($_.VerticalActivePixels) "}}
+        $sortedResolutions = $monitor.MonitorSourceModes | Sort-Object -Property {$_.HorizontalActivePixels * $_.VerticalActivePixels}
+        $maxResolutions = $sortedResolutions | Select-Object @{N="MaxRes";E={"$($_.HorizontalActivePixels) x $($_.VerticalActivePixels) "}}
 
-        $Displays.Add(($maxResolutions | select -last 1).MaxRes);
+        $Displays.Add(($maxResolutions | Select-Object -Last 1).MaxRes);
     }
 
     if ($Displays.Count -eq 1) {
