@@ -62,7 +62,7 @@ Function Get-LineToTitleMappings()
 
 Function Get-UserInformation()
 {
-    return $env:USERNAME + "@" + (Get-WmiObject Win32_OperatingSystem).CSName;
+    return $env:USERNAME + "@" + [System.Net.Dns]::GetHostName();
 }
 
 Function Get-OS()
