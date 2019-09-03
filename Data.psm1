@@ -181,17 +181,17 @@ Function Get-Disks()
             {
                 $FreeDiskSize = (Get-WmiObject Win32_LogicalDisk)[$i].FreeSpace
                 $FreeDiskSizeGB = $FreeDiskSize / 1073741824;
-                $FreeDiskSizeGB = "{0:N0}" -f $FreeDiskSizeGB;
+                $FreeDiskSizeGB = "{0:F0}" -f $FreeDiskSizeGB;
 
                 $DiskSizeGB = $DiskSize / 1073741824;
-                $DiskSizeGB = "{0:N0}" -f $DiskSizeGB;
+                $DiskSizeGB = "{0:F0}" -f $DiskSizeGB;
 
                 $FreeDiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
-                $FreeDiskPercent = "{0:N0}" -f $FreeDiskPercent;
+                $FreeDiskPercent = "{0:F0}" -f $FreeDiskPercent;
 
                 $UsedDiskSizeGB = $DiskSizeGB - $FreeDiskSizeGB;
                 $UsedDiskPercent = ($UsedDiskSizeGB / $DiskSizeGB) * 100;
-                $UsedDiskPercent = "{0:N0}" -f $UsedDiskPercent;
+                $UsedDiskPercent = "{0:F0}" -f $UsedDiskPercent;
             }
             else {
                 $DiskSizeGB = 0;
@@ -213,20 +213,20 @@ Function Get-Disks()
 
         $FreeDiskSize = (Get-WmiObject Win32_LogicalDisk).FreeSpace
         $FreeDiskSizeGB = $FreeDiskSize / 1073741824;
-        $FreeDiskSizeGB = "{0:N0}" -f $FreeDiskSizeGB;
+        $FreeDiskSizeGB = "{0:F0}" -f $FreeDiskSizeGB;
 
         $DiskSize = (Get-WmiObject Win32_LogicalDisk).Size;
         $DiskSizeGB = $DiskSize / 1073741824;
-        $DiskSizeGB = "{0:N0}" -f $DiskSizeGB;
+        $DiskSizeGB = "{0:F0}" -f $DiskSizeGB;
 
         if ($DiskSize -gt 0) 
         {
             $FreeDiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
-            $FreeDiskPercent = "{0:N0}" -f $FreeDiskPercent;
+            $FreeDiskPercent = "{0:F0}" -f $FreeDiskPercent;
 
             $UsedDiskSizeGB = $DiskSizeGB - $FreeDiskSizeGB;
             $UsedDiskPercent = ($UsedDiskSizeGB / $DiskSizeGB) * 100;
-            $UsedDiskPercent = "{0:N0}" -f $UsedDiskPercent;
+            $UsedDiskPercent = "{0:F0}" -f $UsedDiskPercent;
 
             $FormattedDisk = "Disk " + $DiskID.ToString() + " " +
                 $UsedDiskSizeGB.ToString() + "GB" + " / " + $DiskSizeGB.ToString() + "GB " +
