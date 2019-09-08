@@ -4,6 +4,7 @@ Function Get-SystemSpecifications()
 {
 
     $UserInfo = Get-UserInformation;
+    $Seperator = Get-Seperator;
     $OS = Get-OS;
     $Kernel = Get-Kernel;
     $Uptime = Get-Uptime;
@@ -20,7 +21,8 @@ Function Get-SystemSpecifications()
 
     [System.Collections.ArrayList] $SystemInfoCollection = 
         $UserInfo, 
-        $OS, 
+        $Seperator, 
+        $OS,
         $Kernel,
         $Uptime,
         $Motherboard,
@@ -44,17 +46,18 @@ Function Get-LineToTitleMappings()
 { 
     $TitleMappings = @{
         0 = "";
-        1 = "OS: "; 
-        2 = "Kernel: ";
-        3 = "Uptime: ";
-        4 = "Motherboard: ";
-        5 = "Shell: ";
-        6 = "Resolution: ";
-        7 = "Window Manager: ";
-        8 = "Font: ";
-        9 = "CPU: ";
-        10 = "GPU ";
-        11 = "RAM: ";
+        1 = "";
+        2 = "OS: "; 
+        3 = "Kernel: ";
+        4 = "Uptime: ";
+        5 = "Motherboard: ";
+        6 = "Shell: ";
+        7 = "Resolution: ";
+        8 = "WM: ";
+        9 = "Font: ";
+        10 = "CPU: ";
+        11 = "GPU: ";
+        12 = "RAM: ";
     };
 
     return $TitleMappings;
@@ -63,6 +66,15 @@ Function Get-LineToTitleMappings()
 Function Get-UserInformation()
 {
     return $env:USERNAME + "@" + (Get-WmiObject Win32_OperatingSystem).CSName;
+}
+
+Function Get-Seperator()
+{
+    for ($i=0; $i -lt ($UserInfo.length); $i++) {
+        $SeperatorString += "-";
+    }
+
+    return $SeperatorString;
 }
 
 Function Get-OS()
@@ -99,14 +111,6 @@ Function Get-Shell()
     return "PowerShell $($PSVersionTable.PSVersion.ToString())";
 }
 
-Function Get-Display()
-{
-    # This gives the current resolution
-    $videoMode = Get-WmiObject -Class Win32_VideoController;
-    $Display = $videoMode.CurrentHorizontalResolution.ToString() + " x " + $videoMode.CurrentVerticalResolution.ToString() + " (" + $videoMode.CurrentRefreshRate.ToString() + "Hz)";
-    return $Display;
-}
-
 Function Get-Displays()
 { 
     $Displays = New-Object System.Collections.Generic.List[System.Object];
@@ -121,10 +125,6 @@ Function Get-Displays()
         $maxResolutions = $sortedResolutions | select @{N="MaxRes";E={"$($_.HorizontalActivePixels) x $($_.VerticalActivePixels) "}}
 
         $Displays.Add(($maxResolutions | select -last 1).MaxRes);
-    }
-
-    if ($Displays.Count -eq 1) {
-        return Get-Display
     }
 
     return $Displays;
@@ -175,35 +175,24 @@ Function Get-Disks()
         {
             $DiskID = (Get-WmiObject Win32_LogicalDisk)[$i].DeviceId;
 
+            $FreeDiskSize = (Get-WmiObject Win32_LogicalDisk)[$i].FreeSpace
+            $FreeDiskSizeGB = $FreeDiskSize / 1073741824;
+            $FreeDiskSizeGB = "{0:F0}" -f $FreeDiskSizeGB;
+
             $DiskSize = (Get-WmiObject Win32_LogicalDisk)[$i].Size;
+            $DiskSizeGB = $DiskSize / 1073741824;
+            $DiskSizeGB = "{0:F0}" -f $DiskSizeGB;
 
-            if ($DiskSize -and $DiskSize -ne 0)
-            {
-                $FreeDiskSize = (Get-WmiObject Win32_LogicalDisk)[$i].FreeSpace
-                $FreeDiskSizeGB = $FreeDiskSize / 1073741824;
-                $FreeDiskSizeGB = "{0:F0}" -f $FreeDiskSizeGB;
+            $FreeDiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
+            $FreeDiskPercent = "{0:F0}" -f $FreeDiskPercent;
 
-                $DiskSizeGB = $DiskSize / 1073741824;
-                $DiskSizeGB = "{0:F0}" -f $DiskSizeGB;
-
-                $FreeDiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
-                $FreeDiskPercent = "{0:F0}" -f $FreeDiskPercent;
-
-                $UsedDiskSizeGB = $DiskSizeGB - $FreeDiskSizeGB;
-                $UsedDiskPercent = ($UsedDiskSizeGB / $DiskSizeGB) * 100;
-                $UsedDiskPercent = "{0:F0}" -f $UsedDiskPercent;
-            }
-            else {
-                $DiskSizeGB = 0;
-                $FreeDiskSizeGB = 0;
-                $FreeDiskPercent = 0;
-                $UsedDiskSizeGB = 0;
-                $UsedDiskPercent = 100;
-            }
+            $UsedDiskSizeGB = $DiskSizeGB - $FreeDiskSizeGB;
+            $UsedDiskPercent = ($UsedDiskSizeGB / $DiskSizeGB) * 100;
+            $UsedDiskPercent = "{0:F0}" -f $UsedDiskPercent;
 
             $FormattedDisk = "Disk " + $DiskID.ToString() + " " + 
-                $UsedDiskSizeGB.ToString() + "GB" + " / " + $DiskSizeGB.ToString() + "GB " + 
-                "(" + $UsedDiskPercent.ToString() + "%" + ")";
+                $UsedDiskSizeGB.ToString("D4") + " GB" + " / " + $DiskSizeGB.ToString() + " GB " + 
+                " (" + $UsedDiskPercent.ToString() + "%" + ")";
             $FormattedDisks.Add($FormattedDisk);
         }
     }
@@ -229,8 +218,8 @@ Function Get-Disks()
             $UsedDiskPercent = "{0:F0}" -f $UsedDiskPercent;
 
             $FormattedDisk = "Disk " + $DiskID.ToString() + " " +
-                $UsedDiskSizeGB.ToString() + "GB" + " / " + $DiskSizeGB.ToString() + "GB " +
-                "(" + $UsedDiskPercent.ToString() + "%" + ")";
+                $UsedDiskSizeGB.ToString() + " GB" + " / " + $DiskSizeGB.ToString() + " GB " +
+                " (" + $UsedDiskPercent.ToString() + "%" + ")";
             $FormattedDisks.Add($FormattedDisk);
         } 
         else 

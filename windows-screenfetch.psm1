@@ -14,9 +14,20 @@ Function Screenfetch($distro)
     if (([string]::Compare($distro, "mac", $true) -eq 0) -or 
         ([string]::Compare($distro, "macOS", $true) -eq 0) -or 
         ([string]::Compare($distro, "osx", $true) -eq 0)) {
-            
+
         $AsciiArt = . Get-MacArt;
     }
+
+    elseif (([string]::Compare($distro, "arch", $true) -eq 0)) {
+                
+           $AsciiArt = . Get-ArchArt;
+    }
+
+    elseif (([string]::Compare($distro, "lucasoe", $true) -eq 0)) {
+              
+           $AsciiArt = . Get-LucasOeArt;
+    }   
+
     else 
     {
         $AsciiArt = . Get-WindowsArt;
@@ -30,14 +41,15 @@ Function Screenfetch($distro)
         Write-Error "System Specs occupies more lines than the Ascii Art resource selected"
     }
 
+    Write-Host "`r`n";
     for ($line = 0; $line -lt $AsciiArt.Count; $line++) 
     {
         Write-Host $AsciiArt[$line] -f Cyan -NoNewline;
-        Write-Host $LineToTitleMappings[$line] -f Red -NoNewline;
+        Write-Host $LineToTitleMappings[$line] -f Cyan -NoNewline;
 
         if ($line -eq 0) 
         {
-            Write-Host $SystemInfoCollection[$line] -f Red;
+            Write-Host $SystemInfoCollection[$line] -f Cyan;
         }
 
         elseif ($SystemInfoCollection[$line] -like '*:*') 
@@ -48,7 +60,7 @@ Function Screenfetch($distro)
             $Title = $Splitted[0] + $Seperator;
             $Content = $Splitted[1];
 
-            Write-Host $Title -f Red -NoNewline;
+            Write-Host $Title -f Cyan -NoNewline;
             Write-Host $Content;
         }
         else 
