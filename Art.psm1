@@ -18,8 +18,6 @@ Function Get-WindowsArt()
             "           '''':::: ::::::::::::::::       ",
             "                    ''''::::::::::::       ",
             "                            ''''::::       ",
-            "                                           ",
-            "                                           ",
             "                                           ";
     
     return $ArtArray;
@@ -45,9 +43,6 @@ Function Get-MacArt()
             "      \'ossssssssssssssssssssss/           ",
             "        :ooooooooooooooooooo+.             ",
             "         \':+oo+/:-..-:/+o+/-              ",
-            "                                           ",
-            "                                           ",
-            "                                           ",
             "                                           ";
 
     return $ArtArray;    

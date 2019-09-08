@@ -8,7 +8,8 @@ Function Screenfetch($distro)
 
     if (-not $distro) 
     {
-        $AsciiArt = . Get-WindowsArt;
+        #$AsciiArt = . Get-WindowsArt;
+        $AsciiArt = . Get-ArchArt;
     }
 
     if (([string]::Compare($distro, "mac", $true) -eq 0) -or 
@@ -16,6 +17,11 @@ Function Screenfetch($distro)
         ([string]::Compare($distro, "osx", $true) -eq 0)) {
 
         $AsciiArt = . Get-MacArt;
+    }
+
+    elseif (([string]::Compare($distro, "windows", $true) -eq 0)) {
+                
+           $AsciiArt = . Get-WindowsArt;
     }
 
     elseif (([string]::Compare($distro, "arch", $true) -eq 0)) {
@@ -30,7 +36,8 @@ Function Screenfetch($distro)
 
     else 
     {
-        $AsciiArt = . Get-WindowsArt;
+        #$AsciiArt = . Get-WindowsArt;
+        $AsciiArt = . Get-ArchArt;
     }
 
     $SystemInfoCollection = . Get-SystemSpecifications;
@@ -41,7 +48,7 @@ Function Screenfetch($distro)
         Write-Error "System Specs occupies more lines than the Ascii Art resource selected"
     }
 
-    Write-Host "`r`n";
+    Write-Host "";
     for ($line = 0; $line -lt $AsciiArt.Count; $line++) 
     {
         Write-Host $AsciiArt[$line] -f Cyan -NoNewline;
