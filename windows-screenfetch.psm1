@@ -25,10 +25,10 @@ Function Screenfetch($distro)
     $SystemInfoCollection = . Get-SystemSpecifications;
     $LineToTitleMappings = . Get-LineToTitleMappings;
 
-    if ($SystemInfoCollection.Count -gt $AsciiArt.Count) 
-    { 
-        Write-Error "System Specs occupies more lines than the Ascii Art resource selected"
-    }
+#    if ($SystemInfoCollection.Count -gt $AsciiArt.Count) 
+#    { 
+#        Write-Error "System Specs occupies more lines than the Ascii Art resource selected"
+#    }
 
     for ($line = 0; $line -lt $AsciiArt.Count; $line++) 
     {

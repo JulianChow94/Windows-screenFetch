@@ -177,7 +177,7 @@ Function Get-Disks()
 
             $DiskSize = (Get-WmiObject Win32_LogicalDisk)[$i].Size;
 
-            if ($DiskSize)
+            if ($DiskSize -gt 0)
             {
                 $FreeDiskSize = (Get-WmiObject Win32_LogicalDisk)[$i].FreeSpace
                 $FreeDiskSizeGB = $FreeDiskSize / 1073741824;
@@ -186,12 +186,19 @@ Function Get-Disks()
                 $DiskSizeGB = $DiskSize / 1073741824;
                 $DiskSizeGB = "{0:N0}" -f $DiskSizeGB;
 
-                $FreeDiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
-                $FreeDiskPercent = "{0:N0}" -f $FreeDiskPercent;
+                if ($DiskSizeGB -gt 0) {
+                    $FreeDiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
+                    $FreeDiskPercent = "{0:N0}" -f $FreeDiskPercent;
 
-                $UsedDiskSizeGB = $DiskSizeGB - $FreeDiskSizeGB;
-                $UsedDiskPercent = ($UsedDiskSizeGB / $DiskSizeGB) * 100;
-                $UsedDiskPercent = "{0:N0}" -f $UsedDiskPercent;
+                    $UsedDiskSizeGB = $DiskSizeGB - $FreeDiskSizeGB;
+                    $UsedDiskPercent = ($UsedDiskSizeGB / $DiskSizeGB) * 100;
+                    $UsedDiskPercent = "{0:N0}" -f $UsedDiskPercent;
+                }
+                else {
+                    $FreeDiskPercent = 0;
+                    $UsedDiskSizeGB = 0;
+                    $UsedDiskPercent = 0;
+                }
             }
             else {
                 $DiskSizeGB = 0;
