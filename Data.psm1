@@ -1,4 +1,3 @@
-Add-Type -AssemblyName System.Windows.Forms
 
 Function Get-SystemSpecifications() 
 {
