@@ -77,7 +77,7 @@ Function Get-Kernel()
 
 Function Get-Uptime()
 {
-    $Uptime = (([DateTime](Get-CimInstance Win32_OperatingSystem).LocalDateTime) - 
+    $Uptime = (([DateTime](Get-CimInstance Win32_OperatingSystem).LocalDateTime) -
             ([DateTime](Get-CimInstance Win32_OperatingSystem).LastBootUpTime));
 
     $FormattedUptime =  $Uptime.Days.ToString() + "d " + $Uptime.Hours.ToString() + "h " + $Uptime.Minutes.ToString() + "m " + $Uptime.Seconds.ToString() + "s ";
@@ -105,7 +105,9 @@ Function Get-Display()
 }
 
 Function Get-Displays()
-{ 
+{
+    return Get-Display;
+
     $Displays = New-Object System.Collections.Generic.List[System.Object];
 
     # This gives the available resolutions
@@ -114,10 +116,10 @@ Function Get-Displays()
     foreach($monitor in $monitors) 
     {
         # Sort the available modes by display area (width*height)
-        $sortedResolutions = $monitor.MonitorSourceModes | sort -property {$_.HorizontalActivePixels * $_.VerticalActivePixels}
-        $maxResolutions = $sortedResolutions | select @{N="MaxRes";E={"$($_.HorizontalActivePixels) x $($_.VerticalActivePixels) "}}
+        $sortedResolutions = $monitor.MonitorSourceModes | Sort-Object -Property {$_.HorizontalActivePixels * $_.VerticalActivePixels}
+        $maxResolutions = $sortedResolutions | Select-Object @{N="MaxRes";E={"$($_.HorizontalActivePixels) x $($_.VerticalActivePixels) "}}
 
-        $Displays.Add(($maxResolutions | select -last 1).MaxRes);
+        $Displays.Add(($maxResolutions | Select-Object -Last 1).MaxRes);
     }
 
     if ($Displays.Count -eq 1) {
@@ -174,7 +176,7 @@ Function Get-Disks()
 
             $DiskSize = (Get-CimInstance Win32_LogicalDisk)[$i].Size;
 
-            if ($DiskSize -and $DiskSize -ne 0)
+            if ($DiskSize -gt 0)
             {
                 $FreeDiskSize = (Get-CimInstance Win32_LogicalDisk)[$i].FreeSpace
                 $FreeDiskSizeGB = $FreeDiskSize / 1073741824;
@@ -183,12 +185,19 @@ Function Get-Disks()
                 $DiskSizeGB = $DiskSize / 1073741824;
                 $DiskSizeGB = "{0:N0}" -f $DiskSizeGB;
 
-                $FreeDiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
-                $FreeDiskPercent = "{0:N0}" -f $FreeDiskPercent;
+                if ($DiskSizeGB -gt 0) {
+                    $FreeDiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
+                    $FreeDiskPercent = "{0:N0}" -f $FreeDiskPercent;
 
-                $UsedDiskSizeGB = $DiskSizeGB - $FreeDiskSizeGB;
-                $UsedDiskPercent = ($UsedDiskSizeGB / $DiskSizeGB) * 100;
-                $UsedDiskPercent = "{0:N0}" -f $UsedDiskPercent;
+                    $UsedDiskSizeGB = $DiskSizeGB - $FreeDiskSizeGB;
+                    $UsedDiskPercent = ($UsedDiskSizeGB / $DiskSizeGB) * 100;
+                    $UsedDiskPercent = "{0:N0}" -f $UsedDiskPercent;
+                }
+                else {
+                    $FreeDiskPercent = 0;
+                    $UsedDiskSizeGB = 0;
+                    $UsedDiskPercent = 0;
+                }
             }
             else {
                 $DiskSizeGB = 0;
