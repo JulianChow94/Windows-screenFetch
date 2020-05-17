@@ -185,7 +185,7 @@ Function Get-Disks()
                 $DiskSizeGB = $DiskSize / 1073741824;
                 $DiskSizeGB = "{0:N0}" -f $DiskSizeGB;
 
-                if ($DiskSizeGB -gt 0) {
+                if ($DiskSizeGB -gt 0 -And $FreeDiskSizeGB -gt 0) {
                     $FreeDiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
                     $FreeDiskPercent = "{0:N0}" -f $FreeDiskPercent;
 
