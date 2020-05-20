@@ -168,16 +168,13 @@ Function Get-Disks()
 
     $NumDisks = (Get-CimInstance Win32_LogicalDisk).Count;
 
-    if ($NumDisks) 
-    {
-        for ($i=0; $i -lt ($NumDisks); $i++) 
-        {
+    if ($NumDisks) {
+        for ($i=0; $i -lt ($NumDisks); $i++) {
             $DiskID = (Get-CimInstance Win32_LogicalDisk)[$i].DeviceId;
 
             $DiskSize = (Get-CimInstance Win32_LogicalDisk)[$i].Size;
 
-            if ($DiskSize -gt 0)
-            {
+            if ($DiskSize -gt 0) {
                 $FreeDiskSize = (Get-CimInstance Win32_LogicalDisk)[$i].FreeSpace
                 $FreeDiskSizeGB = $FreeDiskSize / 1073741824;
                 $FreeDiskSizeGB = "{0:N0}" -f $FreeDiskSizeGB;
@@ -185,7 +182,7 @@ Function Get-Disks()
                 $DiskSizeGB = $DiskSize / 1073741824;
                 $DiskSizeGB = "{0:N0}" -f $DiskSizeGB;
 
-                if ($DiskSizeGB -gt 0) {
+                if ($DiskSizeGB -gt 0 -And $FreeDiskSizeGB -gt 0) {
                     $FreeDiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
                     $FreeDiskPercent = "{0:N0}" -f $FreeDiskPercent;
 
@@ -213,8 +210,7 @@ Function Get-Disks()
             $FormattedDisks.Add($FormattedDisk);
         }
     }
-    else 
-    {
+    else {
         $DiskID = (Get-CimInstance Win32_LogicalDisk).DeviceId;
 
         $FreeDiskSize = (Get-CimInstance Win32_LogicalDisk).FreeSpace
@@ -225,8 +221,7 @@ Function Get-Disks()
         $DiskSizeGB = $DiskSize / 1073741824;
         $DiskSizeGB = "{0:N0}" -f $DiskSizeGB;
 
-        if ($DiskSize -gt 0) 
-        {
+        if ($DiskSize -gt 0 -And $FreeDiskSize -gt 0 ) {
             $FreeDiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
             $FreeDiskPercent = "{0:N0}" -f $FreeDiskPercent;
 
@@ -239,8 +234,7 @@ Function Get-Disks()
                 "(" + $UsedDiskPercent.ToString() + "%" + ")";
             $FormattedDisks.Add($FormattedDisk);
         } 
-        else 
-        {
+        else {
             $FormattedDisk = "Disk " + $DiskID.ToString() + " Empty";
             $FormattedDisks.Add($FormattedDisk);
         }
