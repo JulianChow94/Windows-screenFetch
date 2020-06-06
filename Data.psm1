@@ -177,10 +177,10 @@ Function Get-Disks()
             if ($DiskSize -gt 0) {
                 $FreeDiskSize = (Get-CimInstance Win32_LogicalDisk)[$i].FreeSpace
                 $FreeDiskSizeGB = $FreeDiskSize / 1073741824;
-                $FreeDiskSizeGB = "{0:N0}" -f $FreeDiskSizeGB;
+                $FreeDiskSizeGB = "{0:N0}" -f $FreeDiskSizeGB -replace "\D+";
 
                 $DiskSizeGB = $DiskSize / 1073741824;
-                $DiskSizeGB = "{0:N0}" -f $DiskSizeGB;
+                $DiskSizeGB = "{0:N0}" -f $DiskSizeGB -replace "\D+";
 
                 if ($DiskSizeGB -gt 0 -And $FreeDiskSizeGB -gt 0) {
                     $FreeDiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
@@ -215,11 +215,11 @@ Function Get-Disks()
 
         $FreeDiskSize = (Get-CimInstance Win32_LogicalDisk).FreeSpace
         $FreeDiskSizeGB = $FreeDiskSize / 1073741824;
-        $FreeDiskSizeGB = "{0:N0}" -f $FreeDiskSizeGB;
+        $FreeDiskSizeGB = "{0:N0}" -f $FreeDiskSizeGB -replace "\D+";
 
         $DiskSize = (Get-CimInstance Win32_LogicalDisk).Size;
         $DiskSizeGB = $DiskSize / 1073741824;
-        $DiskSizeGB = "{0:N0}" -f $DiskSizeGB;
+        $DiskSizeGB = "{0:N0}" -f $DiskSizeGB -replace "\D+";
 
         if ($DiskSize -gt 0 -And $FreeDiskSize -gt 0 ) {
             $FreeDiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
