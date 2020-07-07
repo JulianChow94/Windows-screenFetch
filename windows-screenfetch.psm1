@@ -6,18 +6,18 @@ Function Screenfetch($distro)
 {
     $AsciiArt = "";
 
-    if (-not $distro) 
+    if (-not $distro)
     {
         $AsciiArt = . Get-WindowsArt;
     }
 
-    if (([string]::Compare($distro, "mac", $true) -eq 0) -or 
-        ([string]::Compare($distro, "macOS", $true) -eq 0) -or 
+    if (([string]::Compare($distro, "mac", $true) -eq 0) -or
+        ([string]::Compare($distro, "macOS", $true) -eq 0) -or
         ([string]::Compare($distro, "osx", $true) -eq 0)) {
-            
+
         $AsciiArt = . Get-MacArt;
     }
-    else 
+    else
     {
         $AsciiArt = . Get-WindowsArt;
     }
@@ -26,7 +26,7 @@ Function Screenfetch($distro)
     $LineToTitleMappings = . Get-LineToTitleMappings;
 
     # Iterate over all lines from the SystemInfoCollection to display all information
-    for ($line = 0; $line -lt $SystemInfoCollection.Count; $line++) 
+    for ($line = 0; $line -lt $SystemInfoCollection.Count; $line++)
     {
         if (($AsciiArt[$line].Length) -eq 0)
         {
@@ -39,12 +39,12 @@ Function Screenfetch($distro)
         }
         Write-Host $LineToTitleMappings[$line] -f Red -NoNewline;
 
-        if ($line -eq 0) 
+        if ($line -eq 0)
         {
             Write-Host $SystemInfoCollection[$line] -f Red;
         }
 
-        elseif ($SystemInfoCollection[$line] -like '*:*') 
+        elseif ($SystemInfoCollection[$line] -like '*:*')
         {
             $Seperator = ":";
             $Splitted = $SystemInfoCollection[$line].Split($seperator);
@@ -55,9 +55,9 @@ Function Screenfetch($distro)
             Write-Host $Title -f Red -NoNewline;
             Write-Host $Content;
         }
-        else 
+        else
         {
-            Write-Host $SystemInfoCollection[$line];            
+            Write-Host $SystemInfoCollection[$line];
         }
     }
 }

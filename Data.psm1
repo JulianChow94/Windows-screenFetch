@@ -1,11 +1,11 @@
 
-Function Get-SystemSpecifications() 
+Function Get-SystemSpecifications()
 {
 
     $UserInfo = Get-UserInformation;
     $OS = Get-OS;
     $Kernel = Get-Kernel;
-    $Uptime = Get-Uptime;
+    $Uptime = Format-Uptime-Screenfetch;
     $Motherboard = Get-Mobo;
     $Shell = Get-Shell;
     $Displays = Get-Displays;
@@ -17,9 +17,9 @@ Function Get-SystemSpecifications()
     $Disks = Get-Disks;
 
 
-    [System.Collections.ArrayList] $SystemInfoCollection = 
-        $UserInfo, 
-        $OS, 
+    [System.Collections.ArrayList] $SystemInfoCollection =
+        $UserInfo,
+        $OS,
         $Kernel,
         $Uptime,
         $Motherboard,
@@ -35,15 +35,15 @@ Function Get-SystemSpecifications()
     {
         [void]$SystemInfoCollection.Add($Disk);
     }
-    
+
     return $SystemInfoCollection;
 }
 
-Function Get-LineToTitleMappings() 
-{ 
+Function Get-LineToTitleMappings()
+{
     $TitleMappings = @{
         0 = "";
-        1 = "OS: "; 
+        1 = "OS: ";
         2 = "Kernel: ";
         3 = "Uptime: ";
         4 = "Motherboard: ";
@@ -66,7 +66,7 @@ Function Get-UserInformation()
 
 Function Get-OS()
 {
-    return (Get-CimInstance Win32_OperatingSystem).Caption + " " + 
+    return (Get-CimInstance Win32_OperatingSystem).Caption + " " +
         (Get-CimInstance Win32_OperatingSystem).OSArchitecture;
 }
 
@@ -75,13 +75,24 @@ Function Get-Kernel()
     return (Get-CimInstance  Win32_OperatingSystem).Version;
 }
 
-Function Get-Uptime()
+Function Format-Uptime-Screenfetch()
 {
-    $Uptime = (([DateTime](Get-CimInstance Win32_OperatingSystem).LocalDateTime) -
-            ([DateTime](Get-CimInstance Win32_OperatingSystem).LastBootUpTime));
-
-    $FormattedUptime =  $Uptime.Days.ToString() + "d " + $Uptime.Hours.ToString() + "h " + $Uptime.Minutes.ToString() + "m " + $Uptime.Seconds.ToString() + "s ";
+    $uptime_days = (Get-Uptime-Screenfetch | Select-Object -Expand Days)
+    $uptime_hours = (Get-Uptime-Screenfetch | Select-Object -Expand Hours)
+    $uptime_minutes = (Get-Uptime-Screenfetch | Select-Object -Expand Minutes)
+    $uptime_seconds = (Get-Uptime-Screenfetch | Select-Object -Expand Seconds)
+    $FormattedUptime = "${uptime_days}d ${uptime_hours}h ${uptime_minutes}m ${uptime_seconds}s "
     return $FormattedUptime;
+}
+
+Function Get-Uptime-Screenfetch()
+{
+    if (($PSVersionTable.PSVersion | Select-Object -Expand Major) -lt 6) {
+        return ((get-date) - (gcim Win32_OperatingSystem).LastBootUpTime)
+    }
+    else {
+        return Get-Uptime
+    }
 }
 
 Function Get-Mobo()
@@ -113,7 +124,7 @@ Function Get-Displays()
     # This gives the available resolutions
     $monitors = Get-CimInstance -N "root\wmi" -Class WmiMonitorListedSupportedSourceModes
 
-    foreach($monitor in $monitors) 
+    foreach($monitor in $monitors)
     {
         # Sort the available modes by display area (width*height)
         $sortedResolutions = $monitor.MonitorSourceModes | Sort-Object -Property {$_.HorizontalActivePixels * $_.VerticalActivePixels}
@@ -129,29 +140,29 @@ Function Get-Displays()
     return $Displays;
 }
 
-Function Get-WM() 
+Function Get-WM()
 {
     return "DWM";
 }
 
-Function Get-Font() 
+Function Get-Font()
 {
     return "Segoe UI";
 }
 
-Function Get-CPU() 
+Function Get-CPU()
 {
     return (((Get-CimInstance Win32_Processor).Name) -replace '\s+', ' ');
 }
 
-Function Get-GPU() 
+Function Get-GPU()
 {
     return (Get-CimInstance Win32_DisplayConfiguration).DeviceName;
 }
 
-Function Get-RAM() 
+Function Get-RAM()
 {
-    $FreeRam = ([math]::Truncate((Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory / 1KB)); 
+    $FreeRam = ([math]::Truncate((Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory / 1KB));
     $TotalRam = ([math]::Truncate((Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1MB));
     $UsedRam = $TotalRam - $FreeRam;
     $FreeRamPercent = ($FreeRam / $TotalRam) * 100;
@@ -162,8 +173,8 @@ Function Get-RAM()
     return $UsedRam.ToString() + "MB / " + $TotalRam.ToString() + " MB " + "(" + $UsedRamPercent.ToString() + "%" + ")";
 }
 
-Function Get-Disks() 
-{     
+Function Get-Disks()
+{
     $FormattedDisks = New-Object System.Collections.Generic.List[System.Object];
 
     $NumDisks = (Get-CimInstance Win32_LogicalDisk).Count;
@@ -204,8 +215,8 @@ Function Get-Disks()
                 $UsedDiskPercent = 100;
             }
 
-            $FormattedDisk = "Disk " + $DiskID.ToString() + " " + 
-                $UsedDiskSizeGB.ToString() + "GB" + " / " + $DiskSizeGB.ToString() + "GB " + 
+            $FormattedDisk = "Disk " + $DiskID.ToString() + " " +
+                $UsedDiskSizeGB.ToString() + "GB" + " / " + $DiskSizeGB.ToString() + "GB " +
                 "(" + $UsedDiskPercent.ToString() + "%" + ")";
             $FormattedDisks.Add($FormattedDisk);
         }
@@ -233,7 +244,7 @@ Function Get-Disks()
                 $UsedDiskSizeGB.ToString() + "GB" + " / " + $DiskSizeGB.ToString() + "GB " +
                 "(" + $UsedDiskPercent.ToString() + "%" + ")";
             $FormattedDisks.Add($FormattedDisk);
-        } 
+        }
         else {
             $FormattedDisk = "Disk " + $DiskID.ToString() + " Empty";
             $FormattedDisks.Add($FormattedDisk);
