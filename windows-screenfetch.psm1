@@ -36,29 +36,33 @@ Function Screenfetch($distro)
         else
         {
             Write-Host $AsciiArt[$line] -f Cyan -NoNewline;
-        }
-        Write-Host $LineToTitleMappings[$line] -f Red -NoNewline;
+            Write-Host $LineToTitleMappings[$line] -f Red -NoNewline;
 
-        if ($line -eq 0)
-        {
-            Write-Host $SystemInfoCollection[$line] -f Red;
-        }
+            if ($line -eq 0)
+            {
+                Write-Host $SystemInfoCollection[$line] -f Red;
+            }
+            elseif ($SystemInfoCollection[$line] -like '*:*')
+            {
+                $Seperator = ":";
+                $Splitted = $SystemInfoCollection[$line].Split($seperator);
 
-        elseif ($SystemInfoCollection[$line] -like '*:*')
-        {
-            $Seperator = ":";
-            $Splitted = $SystemInfoCollection[$line].Split($seperator);
+                $Title = $Splitted[0] + $Seperator;
+                $Content = $Splitted[1];
 
-            $Title = $Splitted[0] + $Seperator;
-            $Content = $Splitted[1];
-
-            Write-Host $Title -f Red -NoNewline;
-            Write-Host $Content;
-        }
-        else
-        {
-            Write-Host $SystemInfoCollection[$line];
+                Write-Host $Title -f Red -NoNewline;
+                Write-Host $Content;
+            }
+            else
+            {
+                Write-Host $SystemInfoCollection[$line];
+            }
+            if (($SystemInfoCollection.Count -eq $line+1) -And
+                ($AsciiArt.Count -gt $SystemInfoCollection.Count)) {
+                for ($continue = $line; $continue -lt $AsciiArt.Count; $continue++) {
+                    Write-Host $AsciiArt[$continue] -f Cyan;
+                }
+            }
         }
     }
 }
-

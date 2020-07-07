@@ -117,7 +117,10 @@ Function Get-Display()
 
 Function Get-Displays()
 {
-    return Get-Display;
+
+    if ($Displays.Count -eq 1) {
+        return Get-Display
+    }
 
     $Displays = New-Object System.Collections.Generic.List[System.Object];
 
@@ -131,10 +134,6 @@ Function Get-Displays()
         $maxResolutions = $sortedResolutions | Select-Object @{N="MaxRes";E={"$($_.HorizontalActivePixels) x $($_.VerticalActivePixels) "}}
 
         $Displays.Add(($maxResolutions | Select-Object -Last 1).MaxRes);
-    }
-
-    if ($Displays.Count -eq 1) {
-        return Get-Display
     }
 
     return $Displays;
