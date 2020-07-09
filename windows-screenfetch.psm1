@@ -59,7 +59,7 @@ Function Screenfetch($distro)
             }
             if (($SystemInfoCollection.Count -eq $line+1) -And
                 ($AsciiArt.Count -gt $SystemInfoCollection.Count)) {
-                for ($continue = $line; $continue -lt $AsciiArt.Count; $continue++) {
+                for ($continue = $line+1; $continue -lt $AsciiArt.Count; $continue++) {
                     Write-Host $AsciiArt[$continue] -f Cyan;
                 }
             }
