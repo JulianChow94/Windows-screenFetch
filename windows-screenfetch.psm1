@@ -17,6 +17,10 @@ Function Screenfetch($distro)
             
         $AsciiArt = . Get-MacArt;
     }
+    elseif ([string]::Compare($distro, "winold", $true) -eq 0) 
+    {
+        $AsciiArt = . Get-OldWindowsArt;
+    }
     else 
     {
         $AsciiArt = . Get-WindowsArt;
