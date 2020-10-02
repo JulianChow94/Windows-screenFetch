@@ -100,7 +100,7 @@ Function Get-Display()
 {
     # This gives the current resolution
     $videoMode = Get-CimInstance -Class Win32_VideoController;
-    $Display = ([string]$videoMode.CurrentHorizontalResolution).Trim() + " x " + ([string]$videoMode.CurrentVerticalResolution).Trim() + " (" + ([string]$videoMode.CurrentRefreshRate).Trim() + "Hz)"
+    $Display = $videoMode.CurrentHorizontalResolution.ToString() + " x " + $videoMode.CurrentVerticalResolution.ToString() + " (" + $videoMode.CurrentRefreshRate.ToString() + "Hz)";
     return $Display;
 }
 
