@@ -6,13 +6,12 @@ Function Get-SystemSpecifications()
     $OS = Get-OS;
     $Kernel = Get-Kernel;
     $Uptime = Get-Uptime;
-    $Motherboard = Get-Mobo;
-    $Shell = Get-Shell;
-    $Displays = Get-Displays;
     $WM = Get-WM;
-    $Font = Get-Font;
+    $Shell = Get-Shell;
+    $Motherboard = Get-Mobo;
     $CPU = Get-CPU;
     $GPU = Get-GPU;
+    $Displays = Get-Displays;
     $RAM = Get-RAM;
     $Disks = Get-Disks;
 
@@ -22,13 +21,12 @@ Function Get-SystemSpecifications()
         $OS, 
         $Kernel,
         $Uptime,
-        $Motherboard,
-        $Shell,
-        $Displays,
         $WM,
-        $Font,
+        $Shell,
+        $Motherboard,
         $CPU,
         $GPU,
+        $Displays,
         $RAM;
 
     foreach ($Disk in $Disks)
@@ -46,14 +44,13 @@ Function Get-LineToTitleMappings()
         1 = "OS: "; 
         2 = "Kernel: ";
         3 = "Uptime: ";
-        4 = "Motherboard: ";
+        4 = "Window Manager: ";
         5 = "Shell: ";
-        6 = "Resolution: ";
-        7 = "Window Manager: ";
-        8 = "Font: ";
-        9 = "CPU: ";
-        10 = "GPU ";
-        11 = "RAM: ";
+        6 = "Motherboard: ";
+        7 = "CPU: ";
+        8 = "GPU: ";
+        9 = "Display: ";
+        10 = "RAM: ";
     };
 
     return $TitleMappings;
@@ -84,11 +81,9 @@ Function Get-Uptime()
     return $FormattedUptime;
 }
 
-Function Get-Mobo()
+Function Get-WM() 
 {
-    $Motherboard = Get-CimInstance Win32_BaseBoard | Select-Object Manufacturer, Product;
-    return $Motherboard.Manufacturer + " " + $Motherboard.Product;
-
+    return "DWM";
 }
 
 Function Get-Shell()
@@ -99,8 +94,8 @@ Function Get-Shell()
 Function Get-Display()
 {
     # This gives the current resolution
-    $videoMode = Get-CimInstance -Class Win32_VideoController;
-    $Display = $videoMode.CurrentHorizontalResolution.ToString() + " x " + $videoMode.CurrentVerticalResolution.ToString() + " (" + $videoMode.CurrentRefreshRate.ToString() + "Hz)";
+    $videoMode = Get-CimInstance -ClassName Win32_VideoController;
+    $Display = "$($videoMode.CurrentHorizontalResolution)".Trim() + " x " + "$($videoMode.CurrentVerticalResolution)".Trim() + " @ " + "$($videoMode.CurrentRefreshRate)".Trim() + "Hz";
     return $Display;
 }
 
@@ -129,24 +124,21 @@ Function Get-Displays()
     return $Displays;
 }
 
-Function Get-WM() 
-{
-    return "DWM";
-}
-
-Function Get-Font() 
-{
-    return "Segoe UI";
-}
-
 Function Get-CPU() 
 {
-    return (((Get-CimInstance Win32_Processor).Name) -replace '\s+', ' ');
+    return ((Get-CimInstance Win32_Processor|%{$_.Name}) -replace '\s+', ' ') -join("; ");
 }
 
 Function Get-GPU() 
 {
-    return (Get-CimInstance Win32_DisplayConfiguration).DeviceName;
+    return (Get-CimInstance CIM_VideoController|%{$_.Name}) -join("; ");
+}
+
+Function Get-Mobo()
+{
+    $Motherboard = Get-CimInstance Win32_BaseBoard | Select-Object Manufacturer, Product;
+    return $Motherboard.Manufacturer + " " + $Motherboard.Product;
+
 }
 
 Function Get-RAM() 
@@ -159,7 +151,7 @@ Function Get-RAM()
     $UsedRamPercent = ($UsedRam / $TotalRam) * 100;
     $UsedRamPercent = "{0:N0}" -f $UsedRamPercent;
 
-    return $UsedRam.ToString() + "MB / " + $TotalRam.ToString() + " MB " + "(" + $UsedRamPercent.ToString() + "%" + ")";
+    return $UsedRam.ToString() + "MB / " + $TotalRam.ToString() + " MB " + "(" + $UsedRamPercent.ToString() + "%" + " used)";
 }
 
 Function Get-Disks() 
@@ -186,7 +178,9 @@ Function Get-Disks()
                     $FreeDiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
                     $FreeDiskPercent = "{0:N0}" -f $FreeDiskPercent;
 
-                    $UsedDiskSizeGB = $DiskSizeGB - $FreeDiskSizeGB;
+                    $UsedDiskSize = $DiskSize - $FreeDiskSize;
+                    $UsedDiskSizeGB = $UsedDiskSize / 1073741824;
+                    $UsedDiskSizeGB = "{0:N0}" -f $UsedDiskSizeGB;
                     $UsedDiskPercent = ($UsedDiskSizeGB / $DiskSizeGB) * 100;
                     $UsedDiskPercent = "{0:N0}" -f $UsedDiskPercent;
                 }
@@ -206,7 +200,7 @@ Function Get-Disks()
 
             $FormattedDisk = "Disk " + $DiskID.ToString() + " " + 
                 $UsedDiskSizeGB.ToString() + "GB" + " / " + $DiskSizeGB.ToString() + "GB " + 
-                "(" + $UsedDiskPercent.ToString() + "%" + ")";
+                "(" + $UsedDiskPercent.ToString() + "%" + " used)";
             $FormattedDisks.Add($FormattedDisk);
         }
     }
