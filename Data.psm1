@@ -118,6 +118,10 @@ Function Get-Displays()
         }
     }
 
+    if ($Displays.Count -eq 0) {
+        $Displays = "NONE";
+    }
+
     return $Displays;
 }
 
