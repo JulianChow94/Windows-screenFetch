@@ -138,7 +138,7 @@ Function Get-CPU()
 
 Function Get-GPU() 
 {
-    return (Get-CimInstance -ClassName CIM_VideoController | ForEach-Object {$_.Name}) -join("; ");
+    return (Get-CimInstance -ClassName Win32_VideoController | ForEach-Object {$_.Name}) -join("; ");
 }
 
 Function Get-RAM() 
