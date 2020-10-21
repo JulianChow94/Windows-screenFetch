@@ -96,34 +96,26 @@ Function Get-Shell()
     return "PowerShell $($PSVersionTable.PSVersion.ToString())";
 }
 
-Function Get-Display()
-{
-    # This gives the current resolution
-    $videoMode = Get-CimInstance -Class Win32_VideoController;
-    $Display = $videoMode.CurrentHorizontalResolution.ToString() + " x " + $videoMode.CurrentVerticalResolution.ToString() + " (" + $videoMode.CurrentRefreshRate.ToString() + "Hz)";
-    return $Display;
-}
-
 Function Get-Displays()
 {
-    return Get-Display;
-
     $Displays = New-Object System.Collections.Generic.List[System.Object];
+    
+    $Monitors = Get-CimInstance -ClassName Win32_VideoController | Select-Object CurrentHorizontalResolution,CurrentVerticalResolution,CurrentRefreshRate;
 
-    # This gives the available resolutions
-    $monitors = Get-CimInstance -N "root\wmi" -Class WmiMonitorListedSupportedSourceModes
+    for ($i=0; $i -lt ($Monitors.Count); $i++) {
+        $HorizontalResolution = $Monitors[$i].CurrentHorizontalResolution;
+        $VerticalResolution = $Monitors[$i].CurrentVerticalResolution;
+        $RefreshRate = $Monitors[$i].CurrentRefreshRate;
 
-    foreach($monitor in $monitors) 
-    {
-        # Sort the available modes by display area (width*height)
-        $sortedResolutions = $monitor.MonitorSourceModes | Sort-Object -Property {$_.HorizontalActivePixels * $_.VerticalActivePixels}
-        $maxResolutions = $sortedResolutions | Select-Object @{N="MaxRes";E={"$($_.HorizontalActivePixels) x $($_.VerticalActivePixels) "}}
+        if ($HorizontalResolution -And $VerticalResolution -And $RefreshRate) {
+            $Display = $HorizontalResolution.ToString() + " x " + $VerticalResolution.ToString() + " @ " + $RefreshRate.ToString() + "Hz";
 
-        $Displays.Add(($maxResolutions | Select-Object -Last 1).MaxRes);
-    }
+            if ($Displays.Count -eq 1) {
+                $Displays = $Displays.Trim() + "; ";
+            }
 
-    if ($Displays.Count -eq 1) {
-        return Get-Display
+            $Displays = $Displays + $Display;
+        }
     }
 
     return $Displays;
@@ -146,7 +138,7 @@ Function Get-CPU()
 
 Function Get-GPU() 
 {
-    return (Get-CimInstance Win32_DisplayConfiguration).DeviceName;
+    return (Get-CimInstance -ClassName CIM_VideoController | ForEach-Object {$_.Name}) -join("; ");
 }
 
 Function Get-RAM() 
