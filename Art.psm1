@@ -16,10 +16,7 @@ Function Get-WindowsArt()
             "'''':::::::::::: ::::::::::::::::       ",
             "        '''':::: ::::::::::::::::       ",
             "                 ''''::::::::::::       ",
-            "                         ''''::::       ",
-            "                                        ",
-            "                                        ",
-            "                                        ";
+            "                         ''''::::       ";
     
     return $ArtArray;
 }
@@ -42,13 +39,7 @@ Function Get-MacArt()
             "  \`syyyyyyyyyyyyyyyyyyyyyyyy+\`          ",
             "   \`ossssssssssssssssssssss/            ",
             "     :ooooooooooooooooooo+.             ",
-            "      \`:+oo+/:-..-:/+o+/-               ",
-            "                                        ",
-            "                                        ",
-            "                                        ",
-            "                                        ";
+            "      \`:+oo+/:-..-:/+o+/-               ";
 
     return $ArtArray;    
 }
-
-
