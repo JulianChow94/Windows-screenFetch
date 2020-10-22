@@ -26,7 +26,8 @@ Function Screenfetch($distro)
     $LineToTitleMappings = . Get-LineToTitleMappings;
 
     # Iterate over all lines from the SystemInfoCollection to display all information
-    for ($line = 0; $line -lt $SystemInfoCollection.Count; $line++) 
+    $LineNumber = (($SystemInfoCollection.Count, $AsciiArt.Count) | Measure-Object -Maximum).Maximum;
+    for ($line = 0; $line -lt $LineNumber; $line++)
     {
         if (($AsciiArt[$line].Length) -eq 0)
         {
