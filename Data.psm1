@@ -110,11 +110,12 @@ Function Get-Displays()
         if ($HorizontalResolution -And $VerticalResolution -And $RefreshRate) {
             $Display = $HorizontalResolution.ToString() + " x " + $VerticalResolution.ToString() + " @ " + $RefreshRate.ToString() + "Hz";
 
-            if ($Displays.Count -eq 1) {
-                $Displays = $Displays.Trim() + "; ";
+            if (!$Displays) {
+                $Displays = $Display;
             }
-
-            $Displays = $Displays + $Display;
+            else {
+                $Displays = ($Displays, $Display) -join("; ");
+            }
         }
     }
 
