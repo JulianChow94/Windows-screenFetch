@@ -102,7 +102,14 @@ Function Get-Displays()
     
     $Monitors = Get-CimInstance -ClassName Win32_VideoController | Select-Object CurrentHorizontalResolution,CurrentVerticalResolution,CurrentRefreshRate;
 
-    for ($i=0; $i -lt ($Monitors.Count); $i++) {
+    if ($Monitors.Count) {
+        $NumMonitors = $Monitors.Count;
+    }
+    elseif ($Monitors) {
+        $NumMonitors = "1";
+    }
+
+    for ($i=0; $i -lt ($NumMonitors); $i++) {
         $HorizontalResolution = $Monitors[$i].CurrentHorizontalResolution;
         $VerticalResolution = $Monitors[$i].CurrentVerticalResolution;
         $RefreshRate = $Monitors[$i].CurrentRefreshRate;
