@@ -100,16 +100,11 @@ Function Get-Displays()
 {
     $Displays = New-Object System.Collections.Generic.List[System.Object];
     
-    $Monitors = Get-CimInstance -ClassName Win32_VideoController | Select-Object CurrentHorizontalResolution,CurrentVerticalResolution,CurrentRefreshRate;
+    $Monitors = Get-CimInstance -ClassName Win32_VideoController | Select-Object CurrentHorizontalResolution, CurrentVerticalResolution, CurrentRefreshRate;
 
-    if ($Monitors.Count) {
-        $NumMonitors = $Monitors.Count;
-    }
-    elseif ($Monitors) {
-        $NumMonitors = "1";
-    }
+    $NumMonitors = ($Monitors | Measure-Object).Count;
 
-    for ($i=0; $i -lt ($NumMonitors); $i++) {
+    for ($i=0; $i -lt $NumMonitors; $i++) {
         $HorizontalResolution = $Monitors[$i].CurrentHorizontalResolution;
         $VerticalResolution = $Monitors[$i].CurrentVerticalResolution;
         $RefreshRate = $Monitors[$i].CurrentRefreshRate;
