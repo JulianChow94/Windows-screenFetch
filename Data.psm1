@@ -52,7 +52,7 @@ Function Get-LineToTitleMappings()
         7 = "Window Manager: ";
         8 = "Font: ";
         9 = "CPU: ";
-        10 = "GPU ";
+        10 = "GPU: ";
         11 = "RAM: ";
     };
 
