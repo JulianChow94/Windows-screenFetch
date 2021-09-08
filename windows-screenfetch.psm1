@@ -17,6 +17,13 @@ Function Screenfetch($distro)
             
         $AsciiArt = . Get-MacArt;
     }
+    elseif (([string]::Compare($distro, "aperture-sceience", $true) -eq 0) -or 
+            ([string]::Compare($distro, "aperture", $true) -eq 0) -or 
+            ([string]::Compare($distro, "portal", $true) -eq 0)) {
+            
+        $AsciiArt = . Get-ApertureArt;
+
+    }
     else 
     {
         $AsciiArt = . Get-WindowsArt;
