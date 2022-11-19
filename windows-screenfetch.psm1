@@ -1,64 +1,31 @@
-#### Screenfetch for powershell
-#### Author Julian Chow
+# Universal PSM file
+# Requires -Version 6.0
 
+# Get functions files.
+$Functions = @( Get-ChildItem -Path Scripts\*.psm1 -ErrorAction SilentlyContinue )
+# Write-Host $Functions
 
-Function Screenfetch($distro)
+# Import source the files
+foreach($import in @($Functions))
 {
-    $AsciiArt = "";
-
-    if (-not $distro) 
+    Try 
     {
-        $AsciiArt = . Get-WindowsArt;
+        Write-Host $import.fullname 
+        Import-Module $import.fullname -Force -Verbose
     }
-
-    if (([string]::Compare($distro, "mac", $true) -eq 0) -or 
-        ([string]::Compare($distro, "macOS", $true) -eq 0) -or 
-        ([string]::Compare($distro, "osx", $true) -eq 0)) {
-            
-        $AsciiArt = . Get-MacArt;
-    }
-    else 
+    Catch 
     {
-        $AsciiArt = . Get-WindowsArt;
-    }
-
-    $SystemInfoCollection = . Get-SystemSpecifications;
-    $LineToTitleMappings = . Get-LineToTitleMappings;
-
-    # Iterate over all lines from the SystemInfoCollection to display all information
-    for ($line = 0; $line -lt $SystemInfoCollection.Count; $line++) 
-    {
-        if (($AsciiArt[$line].Length) -eq 0)
-        {
-            # Write some whitespaces to sync the left spacing with the asciiart.
-            Write-Host "                                        " -f Cyan -NoNewline;
-        }
-        else
-        {
-            Write-Host $AsciiArt[$line] -f Cyan -NoNewline;
-        }
-        Write-Host $LineToTitleMappings[$line] -f Red -NoNewline;
-
-        if ($line -eq 0) 
-        {
-            Write-Host $SystemInfoCollection[$line] -f Red;
-        }
-
-        elseif ($SystemInfoCollection[$line] -like '*:*') 
-        {
-            $Seperator = ":";
-            $Splitted = $SystemInfoCollection[$line].Split($seperator);
-
-            $Title = $Splitted[0] + $Seperator;
-            $Content = $Splitted[1];
-
-            Write-Host $Title -f Red -NoNewline;
-            Write-Host $Content;
-        }
-        else 
-        {
-            Write-Host $SystemInfoCollection[$line];            
-        }
+        Write_error -Message "Failed to import function $($import.fullname): $_"
     }
 }
 
+function Screenfetch 
+{
+    Get-Session
+    Get-OS 
+    Get-Kernel 
+    Get-UptimeStats
+    Get-Mobo
+}
+
+return Screenfetch
