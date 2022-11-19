@@ -25,18 +25,14 @@ Function Screenfetch($distro)
     $SystemInfoCollection = . Get-SystemSpecifications;
     $LineToTitleMappings = . Get-LineToTitleMappings;
 
-    # Iterate over all lines from the SystemInfoCollection to display all information
-    for ($line = 0; $line -lt $SystemInfoCollection.Count; $line++) 
+    if ($SystemInfoCollection.Count -gt $AsciiArt.Count) 
+    { 
+        Write-Error "System Specs occupies more lines than the Ascii Art resource selected"
+    }
+
+    for ($line = 0; $line -lt $AsciiArt.Count; $line++) 
     {
-        if (($AsciiArt[$line].Length) -eq 0)
-        {
-            # Write some whitespaces to sync the left spacing with the asciiart.
-            Write-Host "                                        " -f Cyan -NoNewline;
-        }
-        else
-        {
-            Write-Host $AsciiArt[$line] -f Cyan -NoNewline;
-        }
+        Write-Host $AsciiArt[$line] -f Cyan -NoNewline;
         Write-Host $LineToTitleMappings[$line] -f Red -NoNewline;
 
         if ($line -eq 0) 
