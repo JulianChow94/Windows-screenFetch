@@ -6,26 +6,22 @@ $Functions = @( Get-ChildItem -Path Scripts\*.psm1 -ErrorAction SilentlyContinue
 # Write-Host $Functions
 
 # Import source the files
-foreach($import in @($Functions))
-{
-    Try 
-    {
+foreach ($import in @($Functions)) {
+    Try {
         Write-Host $import.fullname 
         Import-Module $import.fullname -Force -Verbose
     }
-    Catch 
-    {
+    Catch {
         Write_error -Message "Failed to import function $($import.fullname): $_"
     }
 }
 
-function Screenfetch 
-{
-    Get-Session
-    Get-OS 
-    Get-Kernel 
-    Get-UptimeStats
-    Get-Mobo
+function Screenfetch {
+    Get-Displays
+    Get-CPU
+    Get-GPU
+    Get-Ram
+    Get-Disks
 }
 
-return Screenfetch
+# return Screenfetch
