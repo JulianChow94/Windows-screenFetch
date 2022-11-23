@@ -11,13 +11,13 @@ Function Get-OS() {
         return [System.Environment]::OSVersion.Platform
     }
     else {
-        return (Get-WmiObject Win32_OperatingSystem).Caption + 
-        " " + (Get-WmiObject Win32_OperatingSystem).OSArchitecture;
+        return ((Get-CimInstance -ClassName Win32_OperatingSystem)).Caption + 
+        " " + ((Get-CimInstance -ClassName Win32_OperatingSystem)).OSArchitecture;
     }
 }
 
 Function Get-Kernel() {
-    return (Get-WmiObject Win32_OperatingSystem).Version;
+    return ((Get-CimInstance -ClassName Win32_OperatingSystem)).Version;
 }
 
 Function Get-UptimeStats() {
