@@ -2,7 +2,7 @@ Function Get-Session() {
     $user = $env:USERNAME;
     $computerName = [System.Net.Dns]::GetHostName();
     $output = $user + '@' + $computerName;
-
+    
     return $output
 }
 
@@ -73,17 +73,15 @@ Function Get-Packages() {
 }
 
 # These display values are scaled by the percentage of the user's system display settings
-Function Get-Displays()
-{ 
+Function Get-Displays() { 
     $Displays = New-Object System.Collections.Generic.List[System.Object];
 
     # This gives the available resolutions (scaled)
     $monitors = [System.Windows.Forms.Screen]::AllScreens | Sort-Object -Property Primary -Descending
 
-    foreach($monitor in $monitors) 
-    {
+    foreach ($monitor in $monitors) {
         # Sort the available modes by display area (width*height)
-        $maxResolutions = $monitor.WorkingArea | select @{N="MaxRes";E={"$($_.Width) x $($_.Height) "}}
+        $maxResolutions = $monitor.WorkingArea | select @{N = "MaxRes"; E = { "$($_.Width)x$($_.Height) " } }
 
         $Displays.Add(($maxResolutions | select -last 1).MaxRes);
     }
@@ -91,28 +89,23 @@ Function Get-Displays()
     return $Displays;
 }
 
-Function Get-WM() 
-{
+Function Get-WM() {
     return "DWM";
 }
 
-Function Get-Font() 
-{
+Function Get-Font() {
     return "Segoe UI";
 }
 
-Function Get-CPU() 
-{
+Function Get-CPU() {
     return (((Get-WmiObject Win32_Processor).Name) -replace '\s+', ' ');
 }
 
-Function Get-GPU() 
-{
+Function Get-GPU() {
     return (Get-WmiObject Win32_DisplayConfiguration).DeviceName;
 }
 
-Function Get-RAM() 
-{
+Function Get-RAM() {
     $FreeRam = ([math]::Truncate((Get-WmiObject Win32_OperatingSystem).FreePhysicalMemory / 1KB)); 
     $TotalRam = ([math]::Truncate((Get-WmiObject Win32_ComputerSystem).TotalPhysicalMemory / 1MB));
     $UsedRam = $TotalRam - $FreeRam;
@@ -125,16 +118,13 @@ Function Get-RAM()
 }
 
 #TODO: reformat this
-Function Get-Disks() 
-{     
+Function Get-Disks() {     
     $FormattedDisks = New-Object System.Collections.Generic.List[System.Object];
 
     $NumDisks = (Get-WmiObject Win32_LogicalDisk).Count;
 
-    if ($NumDisks) 
-    {
-        for ($i=0; $i -lt ($NumDisks); $i++) 
-        {
+    if ($NumDisks) {
+        for ($i = 0; $i -lt ($NumDisks); $i++) {
             $DiskID = (Get-WmiObject Win32_LogicalDisk)[$i].DeviceId;
 
             $FreeDiskSize = (Get-WmiObject Win32_LogicalDisk)[$i].FreeSpace
@@ -153,13 +143,12 @@ Function Get-Disks()
             $UsedDiskPercent = "{0:N0}" -f $UsedDiskPercent;
 
             $FormattedDisk = "Disk " + $DiskID.ToString() + " " + 
-                $UsedDiskSizeGB.ToString() + "GB" + " / " + $DiskSizeGB.ToString() + "GB " + 
-                "(" + $UsedDiskPercent.ToString() + "%" + ")";
+            $UsedDiskSizeGB.ToString() + "GB" + " / " + $DiskSizeGB.ToString() + "GB " + 
+            "(" + $UsedDiskPercent.ToString() + "%" + ")";
             $FormattedDisks.Add($FormattedDisk);
         }
     }
-    else 
-    {
+    else {
         $DiskID = (Get-WmiObject Win32_LogicalDisk).DeviceId;
 
         $FreeDiskSize = (Get-WmiObject Win32_LogicalDisk).FreeSpace
@@ -170,8 +159,7 @@ Function Get-Disks()
         $DiskSizeGB = $DiskSize / 1073741824;
         $DiskSizeGB = "{0:N0}" -f $DiskSizeGB;
 
-        if ($DiskSize -gt 0) 
-        {
+        if ($DiskSize -gt 0) {
             $FreeDiskPercent = ($FreeDiskSizeGB / $DiskSizeGB) * 100;
             $FreeDiskPercent = "{0:N0}" -f $FreeDiskPercent;
 
@@ -180,12 +168,11 @@ Function Get-Disks()
             $UsedDiskPercent = "{0:N0}" -f $UsedDiskPercent;
 
             $FormattedDisk = "Disk " + $DiskID.ToString() + " " +
-                $UsedDiskSizeGB.ToString() + "GB" + " / " + $DiskSizeGB.ToString() + "GB " +
-                "(" + $UsedDiskPercent.ToString() + "%" + ")";
+            $UsedDiskSizeGB.ToString() + "GB" + " / " + $DiskSizeGB.ToString() + "GB " +
+            "(" + $UsedDiskPercent.ToString() + "%" + ")";
             $FormattedDisks.Add($FormattedDisk);
         } 
-        else 
-        {
+        else {
             $FormattedDisk = "Disk " + $DiskID.ToString() + " Empty";
             $FormattedDisks.Add($FormattedDisk);
         }
